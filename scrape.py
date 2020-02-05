@@ -4,7 +4,7 @@ import signal
 import json
 import requests
 from tqdm import tqdm
-import uuid
+from uuid import uuid4
 from hashlib import sha256
 
 
@@ -91,7 +91,7 @@ if __name__ == '__main__':
 
         uuids_filename = os.path.join(INPUT_DIR, cat, f'uuids_{cat}.json')
         if not os.path.exists(uuids_filename):
-            uuids = {url: str(uuid.uuid4()) for url in urls}
+            uuids = {url: str(uuid4()) for url in urls}
             with open(uuids_filename, 'w') as f:
                 json.dump(uuids, f, indent=4)
         with open(uuids_filename) as f:
