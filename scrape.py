@@ -79,17 +79,18 @@ if __name__ == '__main__':
         sys.exit(0)
     signal.signal(signal.SIGINT, signal_handler)
 
-    for cat in tqdm(sorted(os.listdir(INPUT_DIR))):
-        print(cat)
-        cat_dir = os.path.join(DATA_DIR, cat)
+    categories = sorted(os.listdir(INPUT_DIR))
+    for i, category in enumerate(categories):
+        print(f'[{i:06d}/{len(categories):06d}] {category}')
+        cat_dir = os.path.join(DATA_DIR, category)
         if not os.path.exists(cat_dir):
             os.mkdir(cat_dir)
 
-        urls_filename = os.path.join(INPUT_DIR, cat, f'urls_{cat}.txt')
+        urls_filename = os.path.join(INPUT_DIR, category, f'urls_{category}.txt')
         with open(urls_filename) as f:
             urls = sorted([url.strip() for url in f.readlines()])
 
-        uuids_filename = os.path.join(INPUT_DIR, cat, f'uuids_{cat}.json')
+        uuids_filename = os.path.join(INPUT_DIR, category, f'uuids_{category}.json')
         if not os.path.exists(uuids_filename):
             uuids = {url: str(uuid4()) for url in urls}
             with open(uuids_filename, 'w') as f:
