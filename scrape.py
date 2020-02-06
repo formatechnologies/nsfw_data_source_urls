@@ -7,7 +7,6 @@ from tqdm import tqdm
 from uuid import uuid4
 from hashlib import sha256
 
-
 DATASET_NAME = 'nsfw2'
 INPUT_DIR = '/home/dennis/formatechnologies/nsfw_data_source_urls/raw_data'
 
@@ -25,12 +24,12 @@ if not os.path.exists(DATA_DIR):
 PROCESSED_PATH = os.path.join(DATASET_DIR, 'image_processed.json')
 if not os.path.exists(PROCESSED_PATH):
     with open(PROCESSED_PATH, 'w') as f:
-        json.dump([], f)
+        json.dump({}, f)
 
 HAHES_PATH = os.path.join(DATASET_DIR, 'image_hashes.json')
 if not os.path.exists(HAHES_PATH):
     with open(HAHES_PATH, 'w') as f:
-        json.dump([], f)
+        json.dump({}, f)
 
 
 def download_image(url, filename, hashes=[]):
@@ -51,7 +50,7 @@ def download_image(url, filename, hashes=[]):
     if hash_ in hashes:
         print(f'Failed to get {url}: Duplicate Detected')
         return
-    hashes.append(hash_)
+    hashes[hash_] = True
 
     with open(filename, 'wb') as f:
         f.write(r.content)
@@ -104,7 +103,7 @@ if __name__ == '__main__':
 
             filename = os.path.join(cat_dir, uuid)
             download_image(url, filename, hashes)
-            processed.append(uuid)
+            processed[uuid] = True
 
             if i % 100 == 0 or i == len(uuids) - 1:
                 save_state(processed, hashes)
