@@ -80,6 +80,9 @@ if __name__ == '__main__':
 
     categories = sorted(os.listdir(INPUT_DIR))
     for i, category in enumerate(categories):
+        if 'artificial-images' in category:
+            continue
+
         print(f'[{i:06d}/{len(categories):06d}] {category}')
         cat_dir = os.path.join(DATA_DIR, category)
         if not os.path.exists(cat_dir):
